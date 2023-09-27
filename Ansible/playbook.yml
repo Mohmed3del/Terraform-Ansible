@@ -1,0 +1,10 @@
+---
+- name: Install Nginx on Bastion
+  hosts: bastion
+  roles:
+    - nginx_proxy
+
+- name: Install Apache on Private Instances
+  hosts: private_ec2
+  roles:
+    - apache

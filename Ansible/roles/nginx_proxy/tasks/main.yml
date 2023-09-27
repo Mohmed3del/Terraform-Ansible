@@ -1,0 +1,49 @@
+---
+# tasks file for roles/nginx_proxy
+- name: 'Install Nginx on Public EC2'
+  apt: 
+    name: nginx
+    update_cache: yes
+
+- name: 'Disable the Default Virtual Host'
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+
+- name: 'Create the Nginx Reverse Proxy'
+  template:
+    src: reverse-proxy.conf.j2
+    path: /etc/nginx/sites-available/reverse-proxy.conf
+  notify: Restart Nginx service
+  
+
+
+- name: 'Create a symbolic link'
+  file:
+    src: /etc/nginx/sites-available/reverse-proxy.conf
+    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+    state: link
+  
+- name: 'Restart Nginx service'
+  shell: systemctl restart nginx
+
+- name: 'private ec2: copying ansible files'
+  copy:
+    src: "{{ item.file}}"
+    dest: "{{home_path}}"
+  loop:
+  - {file: './playbook_private.yaml'}
+  - {file: './inventory'}
+  - {file: '../../../windwos-key.pem'}
+
+- name: 'private ec2: install ansible'
+  apt:
+    name: ansible
+    update_cache: yes
+  when: inventory_hostname == "{{public_1}}"
+
+
+- name: 'private ec2: run ansible code on private ec2'
+  shell: ansible-playbook {{home_path}}/playbook_private.yaml -i {{home_path}}/inventory    
+  when: inventory_hostname == "{{public_1}}"
