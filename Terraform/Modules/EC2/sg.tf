@@ -26,7 +26,7 @@ resource "aws_security_group" "allow_sg" {
 
 
   tags = {
-    Name = var.Name
+    Name = each.key
   }
 }
 

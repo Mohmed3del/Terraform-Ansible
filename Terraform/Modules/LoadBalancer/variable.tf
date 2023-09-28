@@ -14,8 +14,8 @@ variable "load_balancers" {
   }))
 }
 variable "type_id" {
-  description = "A map of type IDs for load balancers."
-  type        = map(string)
+  description = "Map of EC2 instance IDs by type"
+  type        = map(list(string))
 }
 
 variable "vpc_id" {
@@ -29,6 +29,6 @@ variable "subnets_id" {
 }
 
 variable "security_groups" {
-  description = "A list of security group IDs associated with the load balancers."
-  type        = list(string)
+  description = "A set of security group IDs for the load balancer."
+  type        = set(string)
 }

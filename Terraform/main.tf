@@ -110,20 +110,21 @@ module "Load_Balancer" {
   source          = "./Modules/LoadBalancer"
   vpc_id          = module.network.vpcid
   subnets_id      = [module.network.subnet_id["public1"], module.network.subnet_id["public2"]]
-  security_groups = ["private_security_group"] # Change to use the actual security group ID
+  security_groups =  [module.EC2.security_group_ids["private_security_group"]]
+
 
   load_balancers = {
     "public" = {
       internal = false
       type     = "network"
       port     = 80
-      protocol = "HTTP"
+      protocol = "TCP"
       target_groups = [
         {
           target_group_name = "example-tg-1"
           target_type       = "ip"
           port              = 80
-          protocol          = "HTTP"
+          protocol          = "TCP"
         }
       ]
     },
@@ -144,8 +145,9 @@ module "Load_Balancer" {
   }
 
   type_id = {
-    "public"  = tostring(module.EC2.type_public_id)
-    "private" = tostring(module.EC2.type_private_id)
+    "public"  = module.EC2.type_public_id
+    "private" = module.EC2.type_private_id
   }
+
 }
 

@@ -17,7 +17,8 @@ resource "aws_lb_listener" "load_balancer_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.load_balancer_tg[each.key][0].arn
+    target_group_arn = aws_lb_target_group.load_balancer_tg[each.key].arn
+
   }
 }
 
@@ -37,6 +38,6 @@ resource "aws_lb_target_group_attachment" "load_balancer_tg_attachment" {
   }
 
   target_group_arn = aws_lb_target_group.load_balancer_tg[each.key].arn
-  target_id        = var.type_id[each.key] # Adjust this according to your configuration
+  target_id        = var.type_id[each.key][0] # Adjust this according to your configuration
   port             = each.value[0].port
 }
