@@ -122,7 +122,6 @@ module "Load_Balancer" {
       target_groups = [
         {
           target_group_name = "example-tg-1"
-          target_type       = "ip"
           port              = 80
           protocol          = "TCP"
         }
@@ -136,7 +135,6 @@ module "Load_Balancer" {
       target_groups = [
         {
           target_group_name = "example-tg-2"
-          target_type       = "ip"
           port              = 80
           protocol          = "HTTP"
         }

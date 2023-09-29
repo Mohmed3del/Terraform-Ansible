@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "load_balancer_tg" {
   for_each = { for k, v in var.load_balancers : k => v.target_groups }
 
   name       = each.key
-  target_type = "ip"
+  target_type = "instance"
   port       = each.value[0].port
   protocol   = each.value[0].protocol
   vpc_id     = var.vpc_id

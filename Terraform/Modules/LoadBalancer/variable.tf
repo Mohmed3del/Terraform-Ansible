@@ -7,7 +7,6 @@ variable "load_balancers" {
     protocol        = string
     target_groups   = list(object({
       target_group_name = string
-      target_type       = string
       port              = number
       protocol          = string
     }))
