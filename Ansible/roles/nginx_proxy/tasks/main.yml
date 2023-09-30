@@ -24,4 +24,43 @@
     src: /etc/nginx/sites-available/reverse-proxy.conf
     dest: /etc/nginx/sites-enabled/reverse-proxy.conf
     state: link
-  
+
+- name: Copy directory
+  copy:
+    src: roles/apache
+    dest: /home/ubuntu/roles
+    directory_mode: true
+
+
+- name: Recursively change ownership of a directory
+  ansible.builtin.file:
+    path: /home/ubuntu/roles/apache
+    mode: 0755
+    recurse: true
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+
+- name: Copy files
+  copy:
+    src: "{{ item}}"
+    dest: /home/ubuntu
+    owner: ubuntu
+    group: ubuntu
+    
+  loop:
+    - ./ansible.cfg
+    - ./inventory
+    - ./private.yml
+    - ../keys/DevOps.pem
+
+- name: Install Ansible on bastion host 
+  apt: 
+    name: ansible 
+    state: latest 
+    update_cache: yes
+  when: inventory_hostname == "bastion1"
+
+- name: Run Ansible playbook 
+  ansible.builtin.include_tasks: ./private.yml
+  when: inventory_hostname == "bastion1"

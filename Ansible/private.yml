@@ -1,0 +1,5 @@
+- name: Install Apache on Private Instances
+  hosts: private_ec2
+  gather_facts: true
+  roles:
+    - apache
