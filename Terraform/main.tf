@@ -110,7 +110,9 @@ module "Load_Balancer" {
   source          = "./Modules/LoadBalancer"
   vpc_id          = module.network.vpcid
   subnets_id      = [module.network.subnet_id["public1"], module.network.subnet_id["public2"]]
-  security_groups =  [module.EC2.security_group_ids["private_security_group"]]
+  security_groups = [module.EC2.security_group_ids["private_security_group"]]
+  privatetype     = module.EC2.type_private_id
+  publictype      = module.EC2.type_public_id
 
 
   load_balancers = {
@@ -142,10 +144,6 @@ module "Load_Balancer" {
     }
   }
 
-  type_id = {
-    "public"  = module.EC2.type_public_id
-    "private" = module.EC2.type_private_id
-  }
 
 }
 

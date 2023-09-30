@@ -12,10 +12,7 @@ variable "load_balancers" {
     }))
   }))
 }
-variable "type_id" {
-  description = "Map of EC2 instance IDs by type"
-  type        = map(list(string))
-}
+
 
 variable "vpc_id" {
   description = "The ID of the VPC where the load balancers will be created."
@@ -30,4 +27,12 @@ variable "subnets_id" {
 variable "security_groups" {
   description = "A set of security group IDs for the load balancer."
   type        = set(string)
+}
+variable "privatetype" {
+  type = list(string)
+  
+}
+variable "publictype" {
+  type = list(string)
+  
 }
