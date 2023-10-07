@@ -29,7 +29,7 @@
   copy:
     src: roles/apache
     dest: /home/ubuntu/roles
-    directory_mode: true
+    # directory_mode: true
 
 
 - name: Recursively change ownership of a directory
